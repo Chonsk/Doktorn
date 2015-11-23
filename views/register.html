@@ -1,27 +1,58 @@
 <div class="panel panel-primary">
-	<div class="panel-heading">
-		<h3 class="panel-title">Please fill out the form to register</h3>
-	</div>
-	<div class="panel-body">
-		<form class="form" role="form" name="regForm" ng-submit="submit(user)" novalidate>
+  <div class="panel-heading">
+    <h3 class="panel-title">Please fill out the form to register</h3>
+  </div>
+  <div class="panel-body">
+    <form class="form" name="regForm" ng-submit="submit(user)" novalidate role="form" ng-model-options="{updateOn:'keyup change click blur',debounce:{keyup:500,click:0,change:0,blur:0}}" >
 
-			<div class="form-group">
-				<label for="email" class="control-label">email:</label>
-				<input name="email" type="text" id="email" class="form-control" ng-model="user.email" />
-			</div>
+      <!-- EMAIL -->
+      <div class="form-group">
+        <label class="control-label" for="email">email:</label>
+        <input class="form-control" id="email" name="email"
+							 ng-model="user.email" required
+							 type="email"
+							 placeholder="Enter email address"
+							 ng-pattern="/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/"/>
+        <span ng-show="regForm.email.$dirty && regForm.email.$invalid" style="color:red">
+          <span ng-show="regForm.email.$error.required">Email is required.</span>
+          <span ng-show="regForm.email.$error.email">Email is invalid.</span>
+					<div ng-messages="regForm.email.$error" ng-messages-include="error-messages">
+				    <span ng-message="pattern">Please enter a valid email address, the strict version!</span>
+				  </div>
+        </span>
+      </div>
 
-			<div class="form-group">
-				<label for="password" class="control-label">password:</label>
-				<input name="password" type="password" id="password" class="form-control" ng-model="user.password" />
-			</div>
+      <!-- PASSWORD -->
+      <div class="form-group">
+        <label class="control-label" for="password">password:</label>
+        <input class="form-control" id="password" name="password" ng-minlength="8" ng-model="user.password" placeholder="Enter password (minimum 8 characters)" required type="password"/>
+        <span ng-show="regForm.password.$dirty && regForm.password.$invalid" style="color:red">
+          <span ng-show="regForm.password.$error.required">Password is required.</span>
+          <span ng-show="regForm.password.$error.password">Invalid password.</span>
+          <span class="error" ng-show="regForm.password.$error.minlength">Minimum 8 characters please!</span>
+        </span>
+      </div>
 
-          <div class="form-group">
-            <button class="btn btn-primary pull-right">homeie</button>
-          </div>
-          ß<div class="form-group">
-            <button class="btn btn-primary pull-right">register</button>
-          </div>
+      <!-- SSN -->
+      <div class="form-group">
+        <label class="control-label" for="ssn">Social security number:</label>
+        <input class="form-control" id="ssn" name='ssn' ng-model='user.ssn'
+							 type='text' ng-minlength="10" ng-maxlength="10"
+							 placeholder="Enter Social security number (10 digits)" luhn-check/>
+        <span class='error' ng-show="!regForm.ssn.$error.maxlength && !regForm.ssn.$error.minlength && regForm.ssn.$error['luhn-check']">This is not a valid social security number (failed Luhn check)</span>
+				<span class="error" ng-show="regForm.ssn.$error.minlength">Minimum 10 characters please!</span>
+				<span class="error" ng-show="regForm.ssn.$error.maxlength">Maximum 10 characters please!</span>
+      </div>
 
-		</form>
-	</div>
+      <div class="form-group">
+        <button class="btn btn-primary pull-right" ng-disabled="!regForm.$valid" uib-tooltip="blaj">register</button>
+      </div>
+
+    </form>
+    <div class="form-group">
+      <a ng-href="#">
+        <button class="btn btn-primary pull-right">home sweet home</button>
+      </a>
+    </div>
+  </div>
 </div>
