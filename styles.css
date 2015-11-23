@@ -1,0 +1,16 @@
+#congrats {
+  font-size: 30px;
+  /*border: 1px solid #2e6da4;*/
+  border-radius: 0 0 8px 8px;
+  background-color: #5FCC9D;
+  padding: 12px;
+  width: 50%;
+  position: absolute;
+  transform: translate(50%, -100px);
+  z-index: -1;
+  transition: all 0.5s;
+  text-align: center;
+}
+#congrats.visible {
+  transform: translate(50%, -20px);
+}

@@ -12,3 +12,9 @@ and then
 cmd: "http-server C:\location\to\app"
 
 after that, just go localhost:8080 in browser
+
+-----------------------------------------------------------------
+Sources:
+http://jsfiddle.net/gUSZS/ (verify input fields)
+http://www.alexlindgren.com/archive/custom-angularjs-directive-for-luhn-validation/ (ssn luhn chenck)
+the rest is from here and there ;-)

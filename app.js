@@ -21,10 +21,50 @@ config(function($routeProvider) {
 })
 
 .controller('registerCtrl', function($scope, $log) {
+	$scope.congrats = false;
   $scope.submit = function(user) {
     $log.debug('submit: user = ', user);
+		$scope.congrats = true;
+		setTimeout(function() {
+			$scope.$applyAsync(hideMe);
+		}, 1500);
   };
+
+	function hideMe() {
+		$scope.congrats = false;
+		$log.debug("Hide me");
+	}
+
 })
+
+.directive('confirmEqual', function() {
+    return {
+        require: 'ngModel',
+        link: function (scope, elem, attrs, model) {
+            if (!attrs.confirmEqual) {
+                console.error('confirmEqual expects a model as an argument!');
+                return;
+            }
+            scope.$watch(attrs.confirmEqual, function (value) {
+                // Only compare values if the second ctrl has a value.
+                if (model.$viewValue !== undefined && model.$viewValue !== '') {
+                    model.$setValidity('confirmEqual', value === model.$viewValue);
+                }
+            });
+            model.$parsers.push(function (value) {
+                // Mute the confirmEqual error if the second ctrl is empty.
+                if (value === undefined || value === '') {
+                    model.$setValidity('confirmEqual', true);
+                    return value;
+                }
+                var isValid = value === scope.$eval(attrs.confirmEqual);
+                model.$setValidity('confirmEqual', isValid);
+                return isValid ? value : undefined;
+            });
+        }
+    };
+})
+
 
 .directive('luhnCheck', function() {
   return {
@@ -61,5 +101,5 @@ var luhnChk = function(luhn) {
 
 	  return sum % 10 === 0 && sum > 0;
 	}
-	return false; // empty luhn, return false (happens at initiation)
+	return false; // empty luhn, return false
 };
